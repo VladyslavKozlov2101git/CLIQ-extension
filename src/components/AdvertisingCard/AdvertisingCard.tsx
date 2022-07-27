@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import './AdvertisingCard.css';
-import { Hero, getBlob } from '../../utils/api';
+import { Hero, getBlob, main } from '../../utils/api';
 
 function AdvertisingCard() {
   const [isLeft, setIsLeft] = useState(true);
   const [open, setOpen] = useState(true);
-  const [dataPerson, setDataPerson] = useState<Hero | null>();
+  const [dataPerson, setDataPerson] = useState();
 
   useEffect(() => {
     getBlob('10786350-c654-416a-91e4-4ab0490e032b').then((data) => {
       console.log(data);
+      main(data);
       setDataPerson(data);
     });
   }, [isLeft]);
@@ -39,6 +40,7 @@ function AdvertisingCard() {
           Right
         </button>
       </div>
+      <div id="cliq-ad"></div>
       <button className="close__btn" onClick={() => setOpen(false)}>
         Close popup
       </button>

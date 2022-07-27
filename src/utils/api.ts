@@ -20,6 +20,10 @@ export interface Hero {
 
 }
 
+export function findAllAdBlocks(selector = '#cliq-ad') {
+    return document.querySelectorAll(selector);
+}
+
 
 export async function getData(user: number): Promise<Hero> {
     const response = await fetch(`https://swapi.dev/api/people/${user}/`);
@@ -33,6 +37,17 @@ export async function getBlob(key: string): Promise<any> {
     return response;
 }
 
+export function main(mediaHTMLObject) {
+
+
+    // Find all divs with id cliq-ad
+    const adDivs = findAllAdBlocks();
+    // For each div
+    adDivs.forEach(async (adDiv) => {
+
+        adDiv.appendChild(mediaHTMLObject);
+    });
+}
 
 
 
