@@ -20,9 +20,19 @@ export interface Hero {
 
 }
 
+
 export async function getData(user: number): Promise<Hero> {
     const response = await fetch(`https://swapi.dev/api/people/${user}/`);
 
     const data: Hero = await response.json();
     return data;
 }
+
+export async function getBlob(key: string): Promise<any> {
+    const response = await fetch(`http://api.chaincliq.4-com.pro/ad?key=${key}`);
+    return response;
+}
+
+
+
+
