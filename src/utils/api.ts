@@ -32,9 +32,21 @@ export async function getData(user: number): Promise<Hero> {
     return data;
 }
 
-export async function getBlob(key: string): Promise<any> {
-    const response = await fetch(`http://api.chaincliq.4-com.pro/ad?key=${key}`);
-    return response;
+export async function getBlob(key: string, setContentType: any): Promise<any> {
+    const response = await fetch(`http://api.chaincliq.4-com.pro/ad?key=${key}`,{
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        cache: 'no-cache',
+        mode: 'cors'
+    });
+    const headers = await response.headers.get('content-type');
+    
+    headers && setContentType(headers);
+   
+    const blob = await response.blob();
+    return URL.createObjectURL(blob);
 }
 
 export function main(mediaHTMLObject) {
@@ -42,6 +54,7 @@ export function main(mediaHTMLObject) {
 
     // Find all divs with id cliq-ad
     const adDivs = findAllAdBlocks();
+    console.log(adDivs, 777)
     // For each div
     adDivs.forEach(async (adDiv) => {
 

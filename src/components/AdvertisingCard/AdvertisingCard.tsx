@@ -1,49 +1,76 @@
 import React, { useState, useEffect } from 'react';
 import './AdvertisingCard.css';
-import { Hero, getBlob, main } from '../../utils/api';
+import { Hero, getBlob, } from '../../utils/api';
+import IconClose from './close.png'
+
+
 
 function AdvertisingCard() {
   const [isLeft, setIsLeft] = useState(true);
-  const [open, setOpen] = useState(true);
-  const [dataPerson, setDataPerson] = useState();
+  const [open, setOpen] = useState('open');
+  const [advertisingData, setAdvertisingData] = useState();
+  const [headers, setHeaders] = useState('');
+  const [positionY, setPositionY] = useState("top");
+  const [positionX, setPositionX] = useState("left");
+  const [size, setSize] = useState("small");
+
+ 
 
   useEffect(() => {
-    getBlob('10786350-c654-416a-91e4-4ab0490e032b').then((data) => {
-      console.log(data);
-      main(data);
-      setDataPerson(data);
+    getBlob('10786350-c654-416a-91e4-4ab0490e032b', setHeaders).then((data) => {
+     
+      data && setAdvertisingData(data);
     });
   }, [isLeft]);
 
-  if (!dataPerson) {
-    return (
-      <div className={isLeft ? 'information__block' : 'information__block right'}>Loading...</div>
-    );
-  }
+
 
   return (
-    <div
-      className={
-        isLeft && open
-          ? 'information__block'
-          : !isLeft && open
-          ? 'information__block right'
-          : 'information__block closed'
-      }>
-      <h3 className="information__title">Choose comfortable position</h3>
+    <div className={`content__window ${positionY} ${positionX} ${size} ${open}`}>    
 
-      <div className="information__row">
-        <button className="information__btn" onClick={() => setIsLeft(true)}>
-          Left
-        </button>
-        <button className="information__btn" onClick={() => setIsLeft(false)}>
-          Right
+      <div className='header_31415926'>
+        <div className='positions'>
+          <div className='position'>
+            <p>Window position:</p>
+            <button className={`top ${positionY === "top" && "active"}`} onClick={()=>setPositionY("top")}>Top</button>
+            <button className={`bottom ${positionY === "bottom" && "active"}`} onClick={()=>setPositionY("bottom")}>Botton</button>
+            <button className={`left ${positionX === "left" && "active"}`} onClick={()=>setPositionX("left")}>Left</button>
+            <button className={`right ${positionX === "right" && "active"}`} onClick={()=>setPositionX("right")}>Right</button>
+          </div>
+         
+        </div>
+        <button className='close'  onClick={() => setOpen('close')}>
+          Close
         </button>
       </div>
-      <div id="cliq-ad"></div>
-      <button className="close__btn" onClick={() => setOpen(false)}>
-        Close popup
-      </button>
+
+
+
+     { !advertisingData && <div>Loading...</div>}
+
+
+      
+
+      {advertisingData && headers?.includes('image') &&  <div id="cliq-ad">
+        <img src={advertisingData} alt="Sorry, smth went wrong!" />
+      </div>} 
+
+      {advertisingData &&  headers?.includes('video') &&  <div id="cliq-ad">
+        <video src={advertisingData}  controls />
+      </div>} 
+
+      <div className='size__panel'>
+        <p>Window size: </p>
+
+        <div>
+          <button className={`small ${size === "small" && "active"}`} onClick={()=>setSize("small")}>S</button>
+          <button className={`medium ${size === "medium" && "active"}`} onClick={()=>setSize("medium")}>M</button>
+          <button className={`large ${size === "large" && "active"}`} onClick={()=>setSize("large")}>L</button>
+        </div>
+        
+      </div>
+     
+     
     </div>
   );
 }
