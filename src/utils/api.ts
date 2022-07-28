@@ -33,7 +33,7 @@ export async function getData(user: number): Promise<Hero> {
 }
 
 export async function getBlob(key: string, setContentType: any): Promise<any> {
-    const response = await fetch(`http://api.chaincliq.4-com.pro/ad?key=${key}`,{
+    const response = await fetch(`https://api.chaincliq.4-com.pro/ad?key=${key}`,{
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
